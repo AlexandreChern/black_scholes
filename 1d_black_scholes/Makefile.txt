@@ -1,0 +1,20 @@
+
+INC	:= -I$(CUDA_HOME)/include -I.
+LIB	:= -L$(CUDA_HOME)/lib64 -lcudart -lm
+
+
+NVCCFLAGS	:= -O -arch=sm_30 --ptxas-options=-v --use_fast_math
+# NVCCFLAGS	:= -g -G -arch=sm_30 --ptxas-options=-v --use_fast_math
+
+all:		BS_1D_timing warp_trid
+
+BS_1D_timing:	BS_1D_timing.cu trid.h Makefile
+	nvcc BS_1D_timing.cu -o BS_1D_timing $(INC) $(NVCCFLAGS) $(LIB)
+
+warp_trid:	warp_trid.cu trid.h
+	nvcc warp_trid.cu -o warp_trid $(INC) $(NVCCFLAGS) $(LIB)
+
+clean:
+	rm -f BS_1D_timing warp_trid
+
+
